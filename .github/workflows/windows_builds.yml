@@ -145,7 +145,7 @@ jobs:
           [System.IO.Compression.ZipFile]::CreateFromDirectory("bin", "zipbin/${{ matrix.cache-name }}.zip", $compressionLevel, $false)
 
       - name: Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v2.4.2
         with:
           tag_name: windows-mono-Builds
           files: |
