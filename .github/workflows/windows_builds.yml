@@ -138,10 +138,10 @@ jobs:
           name: ${{ matrix.cache-name }}
 
       - name: Zip artifacts
-        shell: sh
         run: |
-          mkdir -p zipbin/
-          zip -r9  "zipbin/${{ matrix.cache-name }}.zip" bin/*
+          Add-Type -AssemblyName System.IO.Compression.FileSystem
+          $compressionLevel = [System.IO.Compression.CompressionLevel]::Optimal
+          [System.IO.Compression.ZipFile]::CreateFromDirectory(bin/*, "zipbin/${{ matrix.cache-name }}.zip", $compressionLevel, $false)
 
       - name: Release
         uses: softprops/action-gh-release@v2

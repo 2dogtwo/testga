@@ -18,4 +18,7 @@ jobs:
     name: 🐧 Linux
     uses: ./.github/workflows/linux_builds.yml
 
+  windows-build:
+    name: 🏁 Windows
+    uses: ./.github/workflows/windows_builds.yml
     
