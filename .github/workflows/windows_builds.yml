@@ -1,0 +1,153 @@
+name: 🏁 Windows Mono msvn Builds
+on:
+  workflow_call:
+  workflow_dispatch:
+permissions:
+  contents: write
+ 
+# Global Settings
+env:
+  SCONS_FLAGS: >-
+    disable_xr=yes 
+    engine_update_check=no 
+    module_camera_enabled=no 
+    module_mobile_vr_enabled=no 
+    module_openxr_enabled=no 
+    module_webxr_enabled=no 
+    module_mono_enabled=yes
+    debug_symbols=no
+    vsproj=yes
+    vsproj_gen_only=no
+    windows_subsystem=gui
+    vulkan=no  
+  SCONS_CACHE_MSVC_CONFIG: true
+  PYTHONIOENCODING: utf8
+
+jobs:
+  build-windows:
+    # Windows 10 with latest image
+    runs-on: windows-latest
+    name: ${{ matrix.name }}
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+ #     max-parallel: 1
+      matrix:
+        include:
+          - name: Editor w/ msvc-cl ltolld
+            cache-name: windows-mono-editor-msvc-ltolld
+            target: editor
+            scons-flags: >-              
+              lto=full
+              linker=lld
+            bin: ./bin/godot.windows.editor.x86_64.mono.exe
+            build-mono: true
+            compiler: msvc
+
+          # - name: Editor w/ msvc-cl ltollvm
+          #   cache-name: windows-mono-editor-msvc-ltollvm
+          #   target: editor   
+          #   scons-flags: >-
+          #     lto=full              
+          #     use_llvm=yes   
+          #   bin: ./bin/godot.windows.editor.x86_64.llvm.mono.exe
+          #   build-mono: true
+          #   compiler: msvc
+
+          - name: Editor w/ msvc-cl jllvm
+            cache-name: windows-mono-editor-msvc-jllvm
+            target: editor
+            scons-flags: >-              
+              use_llvm=yes              
+            bin: ./bin/godot.windows.editor.x86_64.llvm.mono.exe
+            build-mono: true
+            compiler: msvc
+
+          - name: Editor w/ msvc-cl lldllvm
+            cache-name: windows-mono-editor-msvc-lldllvm
+            target: editor
+            scons-flags: >-             
+              linker=lld
+              use_llvm=yes   
+            bin: ./bin/godot.windows.editor.x86_64.llvm.mono.exe
+            build-mono: true
+            compiler: msvc            
+
+
+
+          - name: Template Mono, release ltolld
+            cache-name: windows-mono-template-ltolld
+            target: template_release
+            scons-flags: >-              
+              linker=lld
+              lto=full
+            bin: ./bin/godot.windows.template_release.x86_64.mono.exe
+            compiler: msvc
+
+          # - name: Template Mono, release ltollvm
+          #   cache-name: windows-mono-template-ltollvm
+          #   target: template_release            
+          #   bin: ./bin/godot.windows.template_release.x86_64.llvm.mono.exe
+          #   scons-flags: >-
+          #     lto=full              
+          #     use_llvm=yes   
+          #   compiler: msvc
+
+          - name: Template Mono, release jllvm
+            cache-name: windows-mono-template-jllvm
+            target: template_release
+            bin: ./bin/godot.windows.template_release.x86_64.llvm.mono.exe
+            scons-flags: use_llvm=yes
+            compiler: msvc
+
+          - name: Template Mono, release lldllvm
+            cache-name: windows-mono-template-lldllvm
+            target: template_release
+            scons-flags: >-     
+              use_llvm=yes
+              linker=lld
+            bin: ./bin/godot.windows.template_release.x86_64.llvm.mono.exe
+            compiler: msvc            
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive
+
+      
+      - name: Download Direct3D 12 SDK components
+        shell: sh
+        id: d3d12-sdk
+        run: |
+          mkdir -p ./bin/
+          echo "Disk usage after:" >> ${{ matrix.bin }}
+
+        continue-on-error: true
+
+
+
+        
+
+          
+
+
+      - name: Upload artifact
+        uses: ./.github/actions/upload-artifact
+        with:
+          name: ${{ matrix.cache-name }}
+
+      - name: Zip artifacts
+        shell: sh
+        run: |
+          mkdir -p zipbin/
+          zip -r9  "zipbin/${{ matrix.cache-name }}.zip" bin/*
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: windows-mono-Builds
+          files: |
+            zipbin/*.zip
+
+
