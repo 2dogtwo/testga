@@ -110,9 +110,15 @@ jobs:
         with:
           name: linux-editor-gd-jllvm
           path: artifacts/linux
+
+      - name: Zip artifacts1
+        run: |
+          ls -laRt artifacts/*
+
       - name: Download MacOS artifact
         uses: actions/download-artifact@v4
         with:
+          merge-multiple: true
           name: linux-editor-gd-thinall
           path: artifacts/linux
 
