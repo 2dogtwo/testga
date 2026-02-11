@@ -139,6 +139,7 @@ jobs:
 
       - name: Zip artifacts
         run: |
+          New-Item -ItemType Directory -Path "zipbin/" -Force
           Add-Type -AssemblyName System.IO.Compression.FileSystem
           $compressionLevel = [System.IO.Compression.CompressionLevel]::Optimal
           [System.IO.Compression.ZipFile]::CreateFromDirectory("bin/*", "zipbin/${{ matrix.cache-name }}.zip", $compressionLevel, $false)
