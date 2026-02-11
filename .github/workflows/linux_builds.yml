@@ -119,6 +119,6 @@ jobs:
       - name: Release
         uses: nikitalita/action-gh-release@v1.0
         with:
-          tag_name: ${{ github.workflow }}
+          tag_name: Linux-gd-Builds
           files: |
             artifacts/linux/*.zip
