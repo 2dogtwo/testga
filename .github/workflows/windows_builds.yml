@@ -149,6 +149,7 @@ jobs:
         with:
           draft: false
           prerelease: false
+          overwrite_files: true
           tag_name: windows-mono-Builds
           files: |
             zipbin/*.zip
