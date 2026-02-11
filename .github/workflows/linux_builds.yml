@@ -116,6 +116,10 @@ jobs:
           name: linux-editor-gd-thinall
           path: artifacts/linux
 
+      - name: Zip artifacts
+        run: |
+          ls -laRt artifacts/*
+
       - name: Release
         uses: nikitalita/action-gh-release@v1.0
         with:
