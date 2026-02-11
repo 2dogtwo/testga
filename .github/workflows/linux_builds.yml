@@ -93,10 +93,10 @@ jobs:
 
       - name: Unit tests
         run: |
-          ls -la bin/
-          ls -la ./
+          ls -laRt bin/
+          ls -laRt ./
           
       - name: Unit tests2
         run: |          
-          ls -la /
+          ls -laRt /
 
