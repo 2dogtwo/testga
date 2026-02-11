@@ -120,13 +120,12 @@ jobs:
           ls -laRt artifacts/*
           cd artifacts/linux
           zip -r9  "../linux-editor-gd-jllvm.zip" *
-          cd  ${{ env.CURRENT_DIR }}
-          echo "${{ env.CURRENT_DIR }}" 
-          echo "$(${{ env.CURRENT_DIR }})" 
+          # cd /home/runner/work/testga/testga
+          cd  $CURRENT_DIR
+          echo "$CURRENT_DIR" 
+          echo "$($CURRENT_DIR)" 
           pwd
           cd artifacts/linux2
-          pwd
-          cd /home/runner/work/testga/testga
           pwd
           zip -r9  "../linux-editor-gd-thinall.zip" *
  
