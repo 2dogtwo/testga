@@ -119,10 +119,15 @@ jobs:
           echo "CURRENT_DIR=$(pwd)" >> $GITHUB_ENV
           ls -laRt artifacts/*
           cd artifacts/linux
-          pwd
           zip -r9  "../linux-editor-gd-jllvm.zip" *
           cd  ${{ env.CURRENT_DIR }}
+          echo "${{ env.CURRENT_DIR }}" 
+          echo "$(${{ env.CURRENT_DIR }})" 
+          pwd
           cd artifacts/linux2
+          pwd
+          cd /home/runner/work/testga/testga
+          pwd
           zip -r9  "../linux-editor-gd-thinall.zip" *
  
       - name: Release
