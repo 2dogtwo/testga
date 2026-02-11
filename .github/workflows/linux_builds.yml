@@ -118,7 +118,8 @@ jobs:
           ls -laRt artifacts/*
           cd artifacts/linux
           zip -r9  "../linux-editor-gd-jllvm.zip" *
-          cd artifacts/linux2
+          cd ../..
+          cd /artifacts/linux2
           zip -r9  "../linux-editor-gd-thinall.zip" *
  
       - name: Release
