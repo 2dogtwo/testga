@@ -39,7 +39,15 @@ jobs:
             scons-flags: use_llvm=yes
             bin: ./bin/godot.linuxbsd.editor.arm64.llvm
             
-            
+          - name: linux-editor-gd-thin
+            cache-name: linux-editor-gd-thin
+            target: editor
+            scons-flags: >-             
+              use_llvm=yes
+              linker=lld
+              lto=thin
+            bin: ./bin/godot.linuxbsd.editor.arm64.llvm
+          
             
           - name: linux-editor-gd-thinall
             cache-name: linux-editor-gd-thinall
@@ -112,6 +120,13 @@ jobs:
           merge-multiple: true
           name: linux-editor-gd-thinall
           path: artifacts/linux2
+          
+      - name: Download MacOS artifact
+        uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+          name: linux-editor-gd-thin
+          path: artifacts/linux3
 
       - name: Zip artifacts
         run: |
@@ -128,6 +143,8 @@ jobs:
           cd artifacts/linux2
           pwd
           zip -r9  "../linux-editor-gd-thinall.zip" *
+          cd  $CURRENT_DIR/artifacts/linux3
+          zip -r9  "../linux-editor-gd-thin.zip" *
  
       - name: Release
         uses: softprops/action-gh-release@v2
