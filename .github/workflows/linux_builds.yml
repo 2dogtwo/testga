@@ -92,6 +92,17 @@ jobs:
         with:
           name: ${{ matrix.cache-name }}
 
+      - name: Zip artifacts
+        run: |
+          mkdir -p zipbin/
+          zip -r9  "zipbin/${{ matrix.cache-name }}.zip" bin/*
+ 
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: Linux-Mono-Builds
+          files: |
+            zipbin/*.zip
 
       - name: Unit tests
         run: |
@@ -103,52 +114,52 @@ jobs:
 # MY_LIST 为 item1,item2,item3。
 # 在脚本中，可以使用 IFS=',' read -ra ITEMS <<< "$MY_LIST
 
-  release:
-    needs: [build-linux]
-    runs-on: "ubuntu-22.04"
-    steps:
-      - name: Download Linux artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: linux-editor-gd-jllvm
-          path: artifacts/linux
+  # release:
+  #   needs: [build-linux]
+  #   runs-on: "ubuntu-22.04"
+  #   steps:
+  #     - name: Download Linux artifact
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: linux-editor-gd-jllvm
+  #         path: artifacts/linux
 
 
-      - name: Download MacOS artifact
-        uses: actions/download-artifact@v4
-        with:
-          merge-multiple: true
-          name: linux-editor-gd-thinall
-          path: artifacts/linux2
+  #     - name: Download MacOS artifact
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         merge-multiple: true
+  #         name: linux-editor-gd-thinall
+  #         path: artifacts/linux2
           
-      - name: Download MacOS artifact
-        uses: actions/download-artifact@v4
-        with:
-          merge-multiple: true
-          name: linux-editor-gd-thin
-          path: artifacts/linux3
+  #     - name: Download MacOS artifact
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         merge-multiple: true
+  #         name: linux-editor-gd-thin
+  #         path: artifacts/linux3
 
-      - name: Zip artifacts
-        run: |
-          pwd
-          CURRENT_DIR=$(pwd)
-          ls -laRt artifacts/*
-          cd artifacts/linux
-          zip -r9  "../linux-editor-gd-jllvm.zip" *
-          #           cd  $CURRENT_DIR
-          cd /home/runner/work/testga/testga
-          echo "$CURRENT_DIR" 
-          echo "$($CURRENT_DIR)" 
-          pwd
-          cd artifacts/linux2
-          pwd
-          zip -r9  "../linux-editor-gd-thinall.zip" *
-          cd  $CURRENT_DIR/artifacts/linux3
-          zip -r9  "../linux-editor-gd-thin.zip" *
+  #     - name: Zip artifacts
+  #       run: |
+  #         pwd
+  #         CURRENT_DIR=$(pwd)
+  #         ls -laRt artifacts/*
+  #         cd artifacts/linux
+  #         zip -r9  "../linux-editor-gd-jllvm.zip" *
+  #         #           cd  $CURRENT_DIR
+  #         cd /home/runner/work/testga/testga
+  #         echo "$CURRENT_DIR" 
+  #         echo "$($CURRENT_DIR)" 
+  #         pwd
+  #         cd artifacts/linux2
+  #         pwd
+  #         zip -r9  "../linux-editor-gd-thinall.zip" *
+  #         cd  $CURRENT_DIR/artifacts/linux3
+  #         zip -r9  "../linux-editor-gd-thin.zip" *
  
-      - name: Release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: Linux-gd-Builds
-          files: |
-            artifacts/*.zip
+  #     - name: Release
+  #       uses: softprops/action-gh-release@v2
+  #       with:
+  #         tag_name: Linux-gd-Builds
+  #         files: |
+  #           artifacts/*.zip
