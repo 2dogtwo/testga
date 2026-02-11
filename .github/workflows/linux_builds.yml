@@ -120,8 +120,8 @@ jobs:
           ls -laRt artifacts/*
           cd artifacts/linux
           zip -r9  "../linux-editor-gd-jllvm.zip" *
-          # cd /home/runner/work/testga/testga
-          cd  $CURRENT_DIR
+          #           cd  $CURRENT_DIR
+          cd /home/runner/work/testga/testga
           echo "$CURRENT_DIR" 
           echo "$($CURRENT_DIR)" 
           pwd
