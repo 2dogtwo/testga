@@ -147,11 +147,7 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v2.4.2
         with:
-          draft: false
-          prerelease: false
-          overwrite_files: true
-          append_body: true
-          tag_name: windows-mono-Builds
+          tag_name: windows-mono-Builds-${{ github.GITHUB_RUN_ATTEMPT }}
           files: |
             zipbin/*.zip
 
