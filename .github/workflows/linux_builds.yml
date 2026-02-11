@@ -84,12 +84,6 @@ jobs:
         with:
           name: ${{ matrix.cache-name }}
 
-      - name: Create Release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ matrix.cache-name }}
-          files: |
-            ./bin/*.zip
 
       - name: Unit tests
         run: |
@@ -111,24 +105,25 @@ jobs:
           name: linux-editor-gd-jllvm
           path: artifacts/linux
 
-      - name: Zip artifacts1
-        run: |
-          ls -laRt artifacts/*
 
       - name: Download MacOS artifact
         uses: actions/download-artifact@v4
         with:
           merge-multiple: true
           name: linux-editor-gd-thinall
-          path: artifacts/linux
+          path: artifacts/linux2
 
       - name: Zip artifacts
         run: |
           ls -laRt artifacts/*
-
+          cd artifacts/linux
+          zip -r9  "../linux-editor-gd-jllvm.zip" *
+          cd artifacts/linux2
+          zip -r9  "../linux-editor-gd-thinall.zip" *
+ 
       - name: Release
-        uses: nikitalita/action-gh-release@v1.0
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: Linux-gd-Builds
           files: |
-            artifacts/linux/*.zip
+            artifacts/*.zip
