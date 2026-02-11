@@ -24,6 +24,8 @@ jobs:
   build-linux:
     # Stay one LTS before latest to increase portability of Linux artifacts.
     runs-on: ubuntu-22.04-arm
+    permissions:
+      contents: write
     name: ${{ matrix.name }}
     timeout-minutes: 420
     strategy:
