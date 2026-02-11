@@ -96,7 +96,28 @@ jobs:
           ls -laRt bin/
           ls -laRt ./
           
-      - name: Unit tests2
-        run: |          
-          ls -laRt /
 
+
+# MY_LIST 为 item1,item2,item3。
+# 在脚本中，可以使用 IFS=',' read -ra ITEMS <<< "$MY_LIST
+
+  release:
+    runs-on: "ubuntu-22.04"
+    steps:
+      - name: Download Linux artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: linux-editor-gd-jllvm
+          path: artifacts/linux
+      - name: Download MacOS artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: linux-editor-gd-thinall
+          path: artifacts/linux
+
+      - name: Release
+        uses: nikitalita/action-gh-release@v1.0
+        with:
+          tag_name: ${{ github.workflow }}
+          files: |
+            artifacts/linux/*.zip
