@@ -102,6 +102,7 @@ jobs:
 # 在脚本中，可以使用 IFS=',' read -ra ITEMS <<< "$MY_LIST
 
   release:
+    needs: [build-linux]
     runs-on: "ubuntu-22.04"
     steps:
       - name: Download Linux artifact
