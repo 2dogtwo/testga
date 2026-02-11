@@ -116,7 +116,7 @@ jobs:
       - name: Zip artifacts
         run: |
           pwd
-          echo "CURRENT_DIR=$(pwd)" >> $GITHUB_ENV
+          CURRENT_DIR=$(pwd)
           ls -laRt artifacts/*
           cd artifacts/linux
           zip -r9  "../linux-editor-gd-jllvm.zip" *
