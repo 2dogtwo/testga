@@ -94,3 +94,9 @@ jobs:
       - name: Unit tests
         run: |
           ls -la bin/
+          ls -la ./
+          
+      - name: Unit tests2
+        run: |          
+          ls -la /
+
